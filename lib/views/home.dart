@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ringier_test_task/views/widgets/book_card.dart';
+import 'package:ringier_test_task/models/book.dart';
+import 'package:ringier_test_task/models/book.api.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,6 +13,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Icon customIcon = const Icon(Icons.search);
   Widget customSearchBar = const Text('IT Books Store');
+
+  late List<Book> futureBooks;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBook();
+  }
+
+  Future<void> fetchBook() async {
+    futureBooks = await BookApi.fetchBook();
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,17 +78,20 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-      body: Column(
-        children: const [
-          BookCard(
-            title: r"Designing Across Senses",
-            subtitle: r"A Multimodal Approach to Product Design",
-            image: r"https://itbook.store/img/books/9781491954249.png",
-            isbn13: r"9781491954249",
-            price: r"$27.59",
-          ),
-        ],
-      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: futureBooks.length,
+              itemBuilder: (context, index) {
+                return BookCard(
+                  title: futureBooks[index].title,
+                  subtitle: futureBooks[index].subtitle,
+                  image: futureBooks[index].image,
+                  isbn13: futureBooks[index].isbn13,
+                  price: futureBooks[index].price,
+                );
+              },
+            ),
     );
   }
 }

@@ -52,13 +52,19 @@ class BookCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(this.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         )),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(vertical: 9.15),
                       child: Text(this.subtitle,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
                           style: const TextStyle(
                             fontSize: 14,
                           )),
@@ -73,7 +79,7 @@ class BookCard extends StatelessWidget {
                       )),
                   Text(this.price,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                       )),
                 ],
