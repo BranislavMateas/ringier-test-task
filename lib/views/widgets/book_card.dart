@@ -83,22 +83,3 @@ class BookCard extends StatelessWidget {
     );
   }
 }
-
-/*
-child: Stack(children: [
-          Align(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                "$title\n $subtitle\n $isbn13\n $price",
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            alignment: Alignment.centerRight,
-          ),
-        ]
- */
