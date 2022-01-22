@@ -1,8 +1,12 @@
+/* IMPORTS */
+// packages
 import 'package:flutter/material.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+// UI
 import 'package:ringier_test_task/views/widgets/book_card.dart';
+// models
 import 'package:ringier_test_task/models/book.dart';
 import 'package:ringier_test_task/models/book.api.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,19 +16,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // UI layout
   Icon customIcon = const Icon(Icons.search);
   Widget customSearchBar = const Text('IT Books Store');
-  String query = "/new";
 
-  late List<Book> futureBooks;
+  // UI state
   bool isLoading = true;
 
+  // API
+  late List<Book> futureBooks;
+  List<Book> listBooks = [];
+  String? query;
+
+  // Build method
   @override
   void initState() {
     super.initState();
-    fetchBook(query);
+    fetchBook("/new");
   }
 
+  // Text Controller
   final SearchController = TextEditingController();
 
   @override
@@ -33,10 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  // API fetch method
   Future<void> fetchBook(String query) async {
     futureBooks = await BookApi.fetchBook(query);
     setState(() {
       isLoading = false;
+      listBooks += futureBooks;
     });
   }
 
@@ -51,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
               setState(() {
                 if (customIcon.icon == Icons.search) {
                   customIcon = const Icon(Icons.cancel);
-
                   customSearchBar = ListTile(
                     leading: const Icon(
                       Icons.search,
@@ -98,16 +110,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : LazyLoadScrollView(
-              onEndOfPage: () => fetchBook(query),
+              onEndOfPage: () => {fetchBook("/search/python")},
               child: ListView.builder(
-                itemCount: futureBooks.length,
+                itemCount: listBooks.length,
                 itemBuilder: (context, index) {
                   return BookCard(
-                    title: futureBooks[index].title,
-                    subtitle: futureBooks[index].subtitle,
-                    image: futureBooks[index].image,
-                    isbn13: futureBooks[index].isbn13,
-                    price: futureBooks[index].price,
+                    title: listBooks[index].title,
+                    subtitle: listBooks[index].subtitle,
+                    image: listBooks[index].image,
+                    isbn13: listBooks[index].isbn13,
+                    price: listBooks[index].price,
                   );
                 },
               ),
