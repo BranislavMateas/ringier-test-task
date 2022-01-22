@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ringier_test_task/views/widgets/book_card.dart';
 import 'package:ringier_test_task/models/book.dart';
 import 'package:ringier_test_task/models/book.api.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Icon customIcon = const Icon(Icons.search);
   Widget customSearchBar = const Text('IT Books Store');
+  String query = "/new";
 
   late List<Book> futureBooks;
   bool isLoading = true;
@@ -20,11 +22,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchBook();
+    fetchBook(query);
   }
 
-  Future<void> fetchBook() async {
-    futureBooks = await BookApi.fetchBook();
+  final SearchController = TextEditingController();
+
+  @override
+  void dispose() {
+    SearchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> fetchBook(String query) async {
+    futureBooks = await BookApi.fetchBook(query);
     setState(() {
       isLoading = false;
     });
@@ -42,14 +52,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (customIcon.icon == Icons.search) {
                   customIcon = const Icon(Icons.cancel);
 
-                  customSearchBar = const ListTile(
-                    leading: Icon(
+                  customSearchBar = ListTile(
+                    leading: const Icon(
                       Icons.search,
                       color: Colors.white,
                       size: 28,
                     ),
                     title: TextField(
-                      decoration: InputDecoration(
+                      controller: SearchController,
+                      onSubmitted: (text) {
+                        if (SearchController.text != "") {
+                          String query = "/search/" + SearchController.text;
+                          fetchBook(query);
+                        }
+                      },
+                      decoration: const InputDecoration(
                         hintText: 'type in book name...',
                         hintStyle: TextStyle(
                           color: Colors.white,
@@ -58,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         border: InputBorder.none,
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                       autofocus: true,
@@ -80,17 +97,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: futureBooks.length,
-              itemBuilder: (context, index) {
-                return BookCard(
-                  title: futureBooks[index].title,
-                  subtitle: futureBooks[index].subtitle,
-                  image: futureBooks[index].image,
-                  isbn13: futureBooks[index].isbn13,
-                  price: futureBooks[index].price,
-                );
-              },
+          : LazyLoadScrollView(
+              onEndOfPage: () => fetchBook(query),
+              child: ListView.builder(
+                itemCount: futureBooks.length,
+                itemBuilder: (context, index) {
+                  return BookCard(
+                    title: futureBooks[index].title,
+                    subtitle: futureBooks[index].subtitle,
+                    image: futureBooks[index].image,
+                    isbn13: futureBooks[index].isbn13,
+                    price: futureBooks[index].price,
+                  );
+                },
+              ),
             ),
     );
   }
