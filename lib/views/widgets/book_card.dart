@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BookCard extends StatelessWidget {
   final String title;
@@ -23,7 +24,9 @@ class BookCard extends StatelessWidget {
       width: (MediaQuery.of(context).size.width),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(this.image),
+          image: CachedNetworkImageProvider(
+            this.image,
+          ),
           alignment: const Alignment(-1.1, 0.00),
         ),
         color: Colors.white,

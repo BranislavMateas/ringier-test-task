@@ -20,10 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Icon customIcon = const Icon(Icons.search);
   Widget customSearchBar = const Text('IT Books Store');
 
-  final ScrollController _firstController = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   // UI state
   bool isLoading = true;
+  bool areResults = false;
 
   // API
   late List<Book> futureBooks;
@@ -53,17 +54,21 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = false;
       listBooks += futureBooks;
+      if (listBooks.isEmpty) {
+        areResults = false;
+      } else {
+        areResults = true;
+      }
     });
   }
 
   fetchNextPage() {
     if (SearchController.text != "") {
       fetchBook("/search/" + SearchController.text + "/" + page.toString());
+      page += 1;
     } else {
-      fetchBook("/new");
+      page = 1;
     }
-
-    page += 1;
   }
 
   @override
@@ -88,10 +93,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         onSubmitted: (text) {
                           listBooks = [];
                           if (SearchController.text != "") {
-                            fetchBook("/search/" + SearchController.text);
+                            fetchBook("/search/" +
+                                SearchController.text +
+                                "/" +
+                                page.toString());
+                            page += 1;
                           } else {
                             fetchBook("/new");
                           }
+                          setState(() {
+                            customIcon = const Icon(Icons.search);
+                            customSearchBar = const Text('IT Books Store');
+                          });
                         },
                         decoration: const InputDecoration(
                           hintText: 'type in book name...',
@@ -126,21 +139,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ? const Center(child: CircularProgressIndicator())
             : Scrollbar(
                 isAlwaysShown: true,
-                controller: _firstController,
+                controller: scrollController,
                 child: LazyLoadScrollView(
                   onEndOfPage: () => {fetchNextPage()},
-                  child: ListView.builder(
-                    itemCount: listBooks.length,
-                    itemBuilder: (context, index) {
-                      return BookCard(
-                        title: listBooks[index].title,
-                        subtitle: listBooks[index].subtitle,
-                        image: listBooks[index].image,
-                        isbn13: listBooks[index].isbn13,
-                        price: listBooks[index].price,
-                      );
-                    },
-                  ),
+                  child: areResults
+                      ? ListView.builder(
+                          controller: scrollController,
+                          itemCount: listBooks.length,
+                          itemBuilder: (context, index) {
+                            return BookCard(
+                              title: listBooks[index].title,
+                              subtitle: listBooks[index].subtitle,
+                              image: listBooks[index].image,
+                              isbn13: listBooks[index].isbn13,
+                              price: listBooks[index].price,
+                            );
+                          },
+                        )
+                      : const Center(child: Text("No results were found")),
                 ),
               ));
   }
