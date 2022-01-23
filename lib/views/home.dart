@@ -20,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Icon customIcon = const Icon(Icons.search);
   Widget customSearchBar = const Text('IT Books Store');
 
+  final ScrollController _firstController = ScrollController();
+
   // UI state
   bool isLoading = true;
 
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<Book> futureBooks;
   List<Book> listBooks = [];
   String? query;
+  int page = 1;
 
   // Build method
   @override
@@ -53,77 +56,92 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  fetchNextPage() {
+    if (SearchController.text != "") {
+      fetchBook("/search/" + SearchController.text + "/" + page.toString());
+    } else {
+      fetchBook("/new");
+    }
+
+    page += 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: customSearchBar,
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                if (customIcon.icon == Icons.search) {
-                  customIcon = const Icon(Icons.cancel);
-                  customSearchBar = ListTile(
-                    leading: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                    title: TextField(
-                      controller: SearchController,
-                      onSubmitted: (text) {
-                        if (SearchController.text != "") {
-                          String query = "/search/" + SearchController.text;
-                          fetchBook(query);
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'type in book name...',
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                      style: const TextStyle(
+        appBar: AppBar(
+          title: customSearchBar,
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  if (customIcon.icon == Icons.search) {
+                    customIcon = const Icon(Icons.cancel);
+                    customSearchBar = ListTile(
+                      leading: const Icon(
+                        Icons.search,
                         color: Colors.white,
+                        size: 28,
                       ),
-                      autofocus: true,
-                      cursorColor: Colors.white,
-                      cursorWidth: 2,
-                    ),
-                  );
-                } else {
-                  customIcon = const Icon(Icons.search);
-                  customSearchBar = const Text('IT Books Store');
-                }
-              });
-            },
-            icon: customIcon,
-          )
-        ],
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : LazyLoadScrollView(
-              onEndOfPage: () => {fetchBook("/search/python")},
-              child: ListView.builder(
-                itemCount: listBooks.length,
-                itemBuilder: (context, index) {
-                  return BookCard(
-                    title: listBooks[index].title,
-                    subtitle: listBooks[index].subtitle,
-                    image: listBooks[index].image,
-                    isbn13: listBooks[index].isbn13,
-                    price: listBooks[index].price,
-                  );
-                },
-              ),
-            ),
-    );
+                      title: TextField(
+                        controller: SearchController,
+                        onSubmitted: (text) {
+                          listBooks = [];
+                          if (SearchController.text != "") {
+                            fetchBook("/search/" + SearchController.text);
+                          } else {
+                            fetchBook("/new");
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'type in book name...',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        autofocus: true,
+                        cursorColor: Colors.white,
+                        cursorWidth: 2,
+                      ),
+                    );
+                  } else {
+                    customIcon = const Icon(Icons.search);
+                    customSearchBar = const Text('IT Books Store');
+                  }
+                });
+              },
+              icon: customIcon,
+            )
+          ],
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+        ),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Scrollbar(
+                isAlwaysShown: true,
+                controller: _firstController,
+                child: LazyLoadScrollView(
+                  onEndOfPage: () => {fetchNextPage()},
+                  child: ListView.builder(
+                    itemCount: listBooks.length,
+                    itemBuilder: (context, index) {
+                      return BookCard(
+                        title: listBooks[index].title,
+                        subtitle: listBooks[index].subtitle,
+                        image: listBooks[index].image,
+                        isbn13: listBooks[index].isbn13,
+                        price: listBooks[index].price,
+                      );
+                    },
+                  ),
+                ),
+              ));
   }
 }

@@ -3,16 +3,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class BookApi {
-  static Future<List<Book>> fetchBook(String query) async {
+  static Future<List<Book>> fetchBook(String query,
+      {int bookIndex = 10}) async {
     final response =
         await http.get(Uri.parse('https://api.itbook.store/1.0' + query));
 
     List<Book> filtered = [];
 
-    int bookIndex = 10;
     int totalBooks = int.parse(jsonDecode(response.body)["total"]);
 
-    if (totalBooks <= 10) {
+    if ((totalBooks <= 10) || (query == "/new")) {
       bookIndex = totalBooks;
     }
 
