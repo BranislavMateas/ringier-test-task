@@ -1,4 +1,4 @@
-import 'package:ringier_test_task/models/book.dart';
+import 'package:ringier_test_task/models/book/book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
