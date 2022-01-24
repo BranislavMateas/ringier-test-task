@@ -149,6 +149,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: listBooks.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
+                              child: BookCard(
+                                title: listBooks[index].title,
+                                subtitle: listBooks[index].subtitle,
+                                image: listBooks[index].image,
+                                isbn13: listBooks[index].isbn13,
+                                price: listBooks[index].price,
+                              ),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -159,13 +166,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           title: "Hello World")),
                                 );
                               },
-                              child: BookCard(
-                                title: listBooks[index].title,
-                                subtitle: listBooks[index].subtitle,
-                                image: listBooks[index].image,
-                                isbn13: listBooks[index].isbn13,
-                                price: listBooks[index].price,
-                              ),
                             );
                           },
                         )

@@ -38,12 +38,11 @@ class DetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-      centerTitle: true,
-      title: const Text("Book Detail"),
-      actions: const [],
-    ));
-    /*Column(
-      children: [CachedNetworkImage(imageUrl: this.image)],
-    );*/
+          centerTitle: true,
+          title: const Text("Book Detail"),
+        ),
+        body: Column(
+          children: [CachedNetworkImage(imageUrl: this.image)],
+        ));
   }
 }
