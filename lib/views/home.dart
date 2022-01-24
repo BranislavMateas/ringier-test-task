@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 // UI
 import 'package:ringier_test_task/views/widgets/book_card.dart';
-import 'package:ringier_test_task/views/book_detail.dart';
 // models
 import 'package:ringier_test_task/models/book/book.dart';
 import 'package:ringier_test_task/models/book/book.api.dart';
@@ -148,24 +147,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           controller: scrollController,
                           itemCount: listBooks.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                              child: BookCard(
-                                title: listBooks[index].title,
-                                subtitle: listBooks[index].subtitle,
-                                image: listBooks[index].image,
-                                isbn13: listBooks[index].isbn13,
-                                price: listBooks[index].price,
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const DetailCard(
-                                          image:
-                                              "https://itbook.store/img/books/9781617294136.png",
-                                          title: "Hello World")),
-                                );
-                              },
+                            return BookCard(
+                              title: listBooks[index].title,
+                              subtitle: listBooks[index].subtitle,
+                              image: listBooks[index].image,
+                              isbn13: listBooks[index].isbn13,
+                              price: listBooks[index].price,
                             );
                           },
                         )

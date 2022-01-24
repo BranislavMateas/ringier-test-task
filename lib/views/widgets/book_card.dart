@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ringier_test_task/views/book_detail.dart';
 
 class BookCard extends StatelessWidget {
   final String title;
@@ -29,7 +30,6 @@ class BookCard extends StatelessWidget {
           ),
           alignment: const Alignment(-1.1, 0.00),
         ),
-        color: Colors.white,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10.0),
           topRight: Radius.circular(10.0),
@@ -42,53 +42,63 @@ class BookCard extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      child: FractionallySizedBox(
-          alignment: const Alignment(0.85, 0.0),
-          widthFactor: 0.675,
-          heightFactor: 0.88,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(this.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 9.15),
-                      child: Text(this.subtitle,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          style: const TextStyle(
-                            fontSize: 14,
-                          )),
-                    ),
-                  ]),
-              Row(
+      child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const DetailCard(
+                      image: "https://itbook.store/img/books/9781617294136.png",
+                      title: "Hello World")),
+            );
+          },
+          child: FractionallySizedBox(
+              alignment: const Alignment(0.85, 0.0),
+              widthFactor: 0.675,
+              heightFactor: 0.88,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text("ISBN: " + this.isbn13,
-                      style: const TextStyle(
-                        fontSize: 12,
-                      )),
-                  Text(this.price,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      )),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(this.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 9.15),
+                          child: Text(this.subtitle,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              )),
+                        ),
+                      ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("ISBN: " + this.isbn13,
+                          style: const TextStyle(
+                            fontSize: 12,
+                          )),
+                      Text(this.price,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ],
+                  ),
                 ],
-              ),
-            ],
-          )),
+              ))),
     );
   }
 }
