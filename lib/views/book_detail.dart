@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -213,12 +212,13 @@ class DetailCard extends StatelessWidget {
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   )),
-              Spacer(),
+              const Spacer(),
               RatingBar.builder(
                 initialRating: double.parse(this.rating),
                 minRating: 0,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
+                ignoreGestures: true,
                 itemCount: 5,
                 itemSize: 35.0,
                 onRatingUpdate: (rating) {},
