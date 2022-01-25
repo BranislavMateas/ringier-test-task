@@ -48,8 +48,11 @@ class BookCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => const DetailCard(
-                      image: "https://itbook.store/img/books/9781617294136.png",
-                      title: "Hello World")),
+                        image:
+                            "https://itbook.store/img/books/9781617294136.png",
+                        title: "Hello World",
+                        url: "https://itbook.store/books/9781617294136",
+                      )),
             );
           },
           child: FractionallySizedBox(

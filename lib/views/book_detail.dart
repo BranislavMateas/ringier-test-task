@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailCard extends StatelessWidget {
   final String title;
@@ -14,8 +15,8 @@ class DetailCard extends StatelessWidget {
   final String year;
   final String desc;*/
   final String image;
-  /*final String url;
-  final Map pdf;*/
+  final String url;
+  /* final Map pdf;*/
 
   const DetailCard({
     required this.title,
@@ -30,9 +31,17 @@ class DetailCard extends StatelessWidget {
       required this.year,
       required this.desc,*/
     required this.image,
-    /*required this.url,
-      required this.pdf*/
+    required this.url,
+    /* required this.pdf*/
   });
+
+  launchURL(String link) async {
+    if (await canLaunch(link)) {
+      await launch(link);
+    } else {
+      throw 'Could not launch $link';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +49,13 @@ class DetailCard extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: const Text("Book Detail"),
+          actions: [
+            IconButton(
+                icon: const Icon(Icons.launch),
+                onPressed: () {
+                  launchURL(this.url);
+                })
+          ],
         ),
         body: Column(
           children: [CachedNetworkImage(imageUrl: this.image)],
