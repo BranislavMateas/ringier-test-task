@@ -7,7 +7,6 @@ class DetailApi {
     final response = await http
         .get(Uri.parse('https://api.itbook.store/1.0/books/' + query));
 
-    print(response.body);
     if (response.statusCode == 200) {
       return BookDetail.fromJson(jsonDecode(response.body));
     } else {

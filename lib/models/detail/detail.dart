@@ -45,7 +45,7 @@ class BookDetail {
       desc: json["desc"] as String,
       image: json["image"] as String,
       url: json["url"] as String,
-      pdf: json["pdf"] as Map,
+      pdf: json["pdf"] ?? {},
     );
   }
 }

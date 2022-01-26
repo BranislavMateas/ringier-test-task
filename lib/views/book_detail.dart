@@ -193,14 +193,29 @@ class DetailCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               Row(
-                  children: pdf.entries.map((entry) {
+                  children: (pdf.entries.map((entry) {
                 var w = IconButton(
                     icon: const Icon(Icons.picture_as_pdf),
                     onPressed: () {
                       launchURL(entry.value);
                     });
                 return w;
-              }).toList()),
+              }).toList())
+                          .isNotEmpty
+                      ? pdf.entries.map((entry) {
+                          var w = IconButton(
+                              icon: const Icon(Icons.picture_as_pdf),
+                              onPressed: () {
+                                launchURL(entry.value);
+                              });
+                          return w;
+                        }).toList()
+                      : [
+                          const Text("not available",
+                              style: TextStyle(
+                                fontSize: 16,
+                              )),
+                        ]),
             ]),
             const Padding(
               // Even Padding On All Sides
