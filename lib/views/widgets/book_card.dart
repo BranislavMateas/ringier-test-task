@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ringier_test_task/views/book_detail.dart';
+import 'package:ringier_test_task/models/detail/detail.api.dart';
+import 'package:ringier_test_task/models/detail/detail.dart';
 
-class BookCard extends StatelessWidget {
+class BookCard extends StatefulWidget {
   final String title;
   final String subtitle;
   final String image;
   final String isbn13;
   final String price;
 
-  const BookCard({
+  BookCard({
     required this.title,
     required this.subtitle,
     required this.image,
     required this.isbn13,
     required this.price,
   });
+
+  @override
+  _BookCardState createState() => _BookCardState();
+}
+
+class _BookCardState extends State<BookCard> {
+  BookDetail? theBook;
+  bool areResults = false;
+
+  // API fetch method
+  Future<void> fetchDetail(String query) async {
+    theBook = await DetailApi.fetchDetail(query);
+    setState(() {
+      areResults = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +44,7 @@ class BookCard extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: CachedNetworkImageProvider(
-            this.image,
+            widget.image,
           ),
           alignment: const Alignment(-1.1, 0.00),
         ),
@@ -43,33 +61,31 @@ class BookCard extends StatelessWidget {
         ),
       ),
       child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const DetailCard(
-                          image:
-                              "https://itbook.store/img/books/9781617294136.png",
-                          title: "Hello World",
-                          url: "https://itbook.store/books/9781617294136",
-                          subtitle: "Security in the Cloud",
-                          desc:
-                              "An application running in the cloud can benefit from incredible efficiencies, but they come with unique security threats too. A DevOps team's highest priority is understanding those risks and hardening the system against them.Securing DevOps teaches you the essential techniques to secure your cloud ...",
-                          authors: "Julien Vehent",
-                          pages: "467",
-                          year: "2020",
-                          publisher: "Ikaro",
-                          isbn10: "1617294136",
-                          isbn13: "9781617294136",
-                          rating: "4.75",
-                          price: r"$26.98",
-                          pdf: {
-                            "Chapter 2":
-                                "https://itbook.store/files/9781617294136/chapter2.pdf",
-                            "Chapter 5":
-                                "https://itbook.store/files/9781617294136/chapter5.pdf"
-                          })),
-            );
+          onTap: () async {
+            await fetchDetail(widget.isbn13);
+
+            if (areResults) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailCard(
+                          authors: theBook!.authors,
+                          image: theBook!.image,
+                          title: theBook!.title,
+                          url: theBook!.url,
+                          subtitle: theBook!.subtitle,
+                          desc: theBook!.desc,
+                          pages: theBook!.pages,
+                          year: theBook!.year,
+                          publisher: theBook!.publisher,
+                          isbn10: theBook!.isbn10,
+                          isbn13: theBook!.isbn13,
+                          rating: theBook!.rating,
+                          price: theBook!.price,
+                          pdf: theBook!.pdf,
+                        )),
+              );
+            }
           },
           child: FractionallySizedBox(
               alignment: const Alignment(0.85, 0.0),
@@ -83,7 +99,7 @@ class BookCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(this.title,
+                        Text(widget.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             softWrap: false,
@@ -93,7 +109,7 @@ class BookCard extends StatelessWidget {
                             )),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 9.15),
-                          child: Text(this.subtitle,
+                          child: Text(widget.subtitle,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
@@ -105,11 +121,11 @@ class BookCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("ISBN: " + this.isbn13,
+                      Text("ISBN: " + widget.isbn13,
                           style: const TextStyle(
                             fontSize: 12,
                           )),
-                      Text(this.price,
+                      Text(widget.price,
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
