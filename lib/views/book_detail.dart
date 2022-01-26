@@ -21,7 +21,8 @@ class DetailCard extends StatelessWidget {
   final Map pdf;
 
   const DetailCard(
-      {required this.authors,
+      {Key? key,
+      required this.authors,
       required this.title,
       required this.subtitle,
       required this.pages,
@@ -34,7 +35,8 @@ class DetailCard extends StatelessWidget {
       required this.desc,
       required this.image,
       required this.url,
-      required this.pdf});
+      required this.pdf})
+      : super(key: key);
 
   launchURL(String link) async {
     if (await canLaunch(link)) {
@@ -54,22 +56,22 @@ class DetailCard extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.launch),
                 onPressed: () {
-                  launchURL(this.url);
+                  launchURL(url);
                 })
           ],
         ),
         body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           children: [
             Center(
               child: CachedNetworkImage(
-                imageUrl: this.image,
+                imageUrl: image,
                 width: (MediaQuery.of(context).size.width) * 0.9,
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: Text(this.title,
+              child: Text(title,
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -78,7 +80,7 @@ class DetailCard extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: Text(this.subtitle,
+              child: Text(subtitle,
                   style: const TextStyle(
                     fontSize: 24,
                   )),
@@ -90,7 +92,7 @@ class DetailCard extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: Text(this.authors,
+              child: Text(authors,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -113,7 +115,7 @@ class DetailCard extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: Text(this.desc,
+              child: Text(desc,
                   style: const TextStyle(
                     fontSize: 16,
                   )),
@@ -129,7 +131,7 @@ class DetailCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   )),
-              Text(this.year,
+              Text(year,
                   style: const TextStyle(
                     fontSize: 16,
                   )),
@@ -140,7 +142,7 @@ class DetailCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   )),
-              Text(this.pages,
+              Text(pages,
                   style: const TextStyle(
                     fontSize: 16,
                   )),
@@ -151,7 +153,7 @@ class DetailCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   )),
-              Text(this.publisher,
+              Text(publisher,
                   style: const TextStyle(
                     fontSize: 16,
                   )),
@@ -166,7 +168,7 @@ class DetailCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   )),
-              Text(this.isbn10,
+              Text(isbn10,
                   style: const TextStyle(
                     fontSize: 16,
                   )),
@@ -177,7 +179,7 @@ class DetailCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   )),
-              Text(this.isbn13,
+              Text(isbn13,
                   style: const TextStyle(
                     fontSize: 16,
                   )),
@@ -222,14 +224,14 @@ class DetailCard extends StatelessWidget {
               padding: EdgeInsets.only(top: 20.0),
             ),
             Row(children: [
-              Text(this.price,
+              Text(price,
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   )),
               const Spacer(),
               RatingBar.builder(
-                initialRating: double.parse(this.rating),
+                initialRating: double.parse(rating),
                 minRating: 0,
                 direction: Axis.horizontal,
                 allowHalfRating: true,

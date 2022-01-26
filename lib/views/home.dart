@@ -40,11 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Text Controller
-  final SearchController = TextEditingController();
+  final searchController = TextEditingController();
 
   @override
   void dispose() {
-    SearchController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -63,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   fetchNextPage() {
-    if (SearchController.text != "") {
-      fetchBook("/search/" + SearchController.text + "/" + page.toString());
+    if (searchController.text != "") {
+      fetchBook("/search/" + searchController.text + "/" + page.toString());
       page += 1;
     } else {
       page = 1;
@@ -89,12 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         size: 28,
                       ),
                       title: TextField(
-                        controller: SearchController,
+                        controller: searchController,
                         onSubmitted: (text) {
                           listBooks = [];
-                          if (SearchController.text != "") {
+                          if (searchController.text != "") {
                             fetchBook("/search/" +
-                                SearchController.text +
+                                searchController.text +
                                 "/" +
                                 page.toString());
                             page += 1;

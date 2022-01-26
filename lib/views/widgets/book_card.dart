@@ -11,13 +11,14 @@ class BookCard extends StatefulWidget {
   final String isbn13;
   final String price;
 
-  BookCard({
+  const BookCard({
+    Key? key,
     required this.title,
     required this.subtitle,
     required this.image,
     required this.isbn13,
     required this.price,
-  });
+  }) : super(key: key);
 
   @override
   _BookCardState createState() => _BookCardState();
