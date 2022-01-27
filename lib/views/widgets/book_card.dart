@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ringier_test_task/views/book_detail.dart';
-import 'package:ringier_test_task/models/detail/detail.api.dart';
-import 'package:ringier_test_task/models/detail/detail.dart';
+import 'package:ringier_test_task/repository/detail_repository.dart';
+import 'package:ringier_test_task/models/detail.dart';
 
 class BookCard extends StatefulWidget {
   final String title;
@@ -49,12 +49,7 @@ class _BookCardState extends State<BookCard> {
           ),
           alignment: const Alignment(-1.1, 0.00),
         ),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10.0),
-          topRight: Radius.circular(10.0),
-          bottomLeft: Radius.circular(10.0),
-          bottomRight: Radius.circular(10.0),
-        ),
+        borderRadius: BorderRadius.circular(10.0),
         border: Border.all(
           color: const Color(0xff888888),
           width: 2.0,
@@ -64,7 +59,6 @@ class _BookCardState extends State<BookCard> {
       child: InkWell(
           onTap: () async {
             await fetchDetail(widget.isbn13);
-
             if (areResults) {
               Navigator.push(
                 context,

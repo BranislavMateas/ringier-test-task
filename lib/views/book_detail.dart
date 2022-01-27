@@ -9,7 +9,6 @@ class DetailCard extends StatelessWidget {
   final String pages;
   final String rating;
   final String price;
-
   final String isbn13;
   final String isbn10;
   final String publisher;

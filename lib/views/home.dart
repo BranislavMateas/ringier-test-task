@@ -1,12 +1,8 @@
-/* IMPORTS */
-// packages
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
-// UI
 import 'package:ringier_test_task/views/widgets/book_card.dart';
-// models
-import 'package:ringier_test_task/models/book/book.dart';
-import 'package:ringier_test_task/models/book/book.api.dart';
+import 'package:ringier_test_task/models/book.dart';
+import 'package:ringier_test_task/repository/book_repository.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -32,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? query;
   int page = 1;
 
-  // Build method
+  // Init method
   @override
   void initState() {
     super.initState();

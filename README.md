@@ -1,4 +1,4 @@
-# IT book search engine
+# IT Book Search Engine
 
 ### Test task for Ringier Axel Springer Media job for Junior Flutter Developer
 

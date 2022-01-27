@@ -1,4 +1,4 @@
-import 'package:ringier_test_task/models/book/book.dart';
+import 'package:ringier_test_task/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -8,8 +8,7 @@ class BookApi {
     final response =
         await http.get(Uri.parse('https://api.itbook.store/1.0' + query));
 
-    List<Book> filtered = [];
-
+    List<Book> filteredBooks = [];
     int totalBooks = int.parse(jsonDecode(response.body)["total"]);
 
     if ((totalBooks <= 10) || (query == "/new")) {
@@ -18,9 +17,9 @@ class BookApi {
 
     if (response.statusCode == 200) {
       for (var i = 0; i < bookIndex; i++) {
-        filtered.add(Book.fromJson(jsonDecode(response.body), i));
+        filteredBooks.add(Book.fromJson(jsonDecode(response.body), i));
       }
-      return filtered;
+      return filteredBooks;
     } else {
       throw Exception('Failed to load books');
     }
