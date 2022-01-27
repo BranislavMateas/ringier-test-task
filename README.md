@@ -3,8 +3,8 @@
 ### Test task for Ringier Axel Springer Media job for Junior Flutter Developer
 
 ## To run this app you can :
-- [download it](https://github.com/BranislavMateas/ringier-test-task/releases) as .apk file</br>
-- clone the repo and the run with ```fluter pub get```
+- [Download it](https://github.com/BranislavMateas/ringier-test-task/releases) as .apk file</br>
+- Clone the repo and then run ```fluter pub get``` to get the dependencies
 
 ## Assignment:
 
