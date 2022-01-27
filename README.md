@@ -3,8 +3,8 @@
 ### Test task for Ringier Axel Springer Media job for Junior Flutter Developer
 
 ## To run this app you can :
-### [download it](https://github.com/BranislavMateas/ringier-test-task/releases)
-### clone the repo and the run ```fluter pub get```
+- [download it](https://github.com/BranislavMateas/ringier-test-task/releases) as .apk file</br>
+- clone the repo and the run with ```fluter pub get```
 
 ## Assignment:
 
@@ -13,4 +13,4 @@ Design and build an application built on the Flutter framework that uses an [ope
 search. After entering and confirming the search term, a list of results will be displayed
 search. After clicking on the list item, the book detail will be displayed.
 
-See ya!
+### See ya!
